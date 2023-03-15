@@ -43,7 +43,7 @@ class HomeActivity : ComponentActivity() {
                     composable(
                         route = ScoreScreen.route
                     ) {
-                        ScoreScreen()
+                        ScoreScreen(navHostController)
                     }
                 }
             }

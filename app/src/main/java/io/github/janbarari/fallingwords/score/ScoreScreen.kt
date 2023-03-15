@@ -1,22 +1,111 @@
 package io.github.janbarari.fallingwords.score
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import io.github.janbarari.fallingwords.R
+import io.github.janbarari.fallingwords.intro.IntroScreen
+import io.github.janbarari.fallingwords.theme.BrandColor
 
 object ScoreScreen {
     const val route: String = "score"
 }
 
 @Composable
-fun ScoreScreen() {
-    Surface(
+fun ScoreScreen(navHostController: NavHostController) {
+    ScoreScreenContent(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
+        tryAgainOnClick = {
+            navHostController.navigate(IntroScreen.route) {
+                popUpTo(ScoreScreen.route) { inclusive = true }
+            }
+        }
+    )
+}
+
+@Composable
+fun ScoreScreenContent(
+    modifier: Modifier,
+    tryAgainOnClick: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Score")
+        Image(
+            painter = painterResource(id = R.drawable.ic_score),
+            modifier = Modifier.size(74.dp),
+            contentDescription = "Score Icon"
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = "Yaaay!!",
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.Normal,
+            fontSize = 24.sp
+        )
+        Spacer(modifier = Modifier.height(36.dp))
+        Text(
+            text = "Thank you for taking the time to submit your answers. Your score is as follows:\n" +
+                    "\nCorrect Answers: 14" +
+                    "\nIncorrect Answers: 12" +
+                    "\nUnanswered: 5" +
+                    "\n" +
+                    "\nIf you would like to improve your knowledge, we encourage you to try again. Best of luck!",
+            fontFamily = FontFamily.Serif,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            color = Color.DarkGray,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.width(316.dp)
+        )
+        Spacer(modifier = Modifier.height(76.dp))
+        Button(
+            onClick = tryAgainOnClick,
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = BrandColor,
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(50),
+        ) {
+            Text(
+                text = "Try Again",
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
+
+    }
+}
+
+@Composable
+@Preview(device = Devices.PIXEL_4)
+fun ScoreScreenPreview() {
+    ScoreScreenContent(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+    ) {
+
     }
 }

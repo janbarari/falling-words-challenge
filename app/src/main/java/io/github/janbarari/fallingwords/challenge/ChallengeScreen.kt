@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
 
 object ChallengeScreen {
@@ -29,7 +30,9 @@ fun ChallengeScreen(navHostController: NavHostController) {
         word = "",
         translation = "",
         correctOnClick = {
-
+            navHostController.navigate(ScoreScreen.route) {
+                popUpTo(ChallengeScreen.route) { inclusive = true }
+            }
         },
         wrongOnClick = {
 
@@ -86,7 +89,7 @@ fun ChallengeScreenContent(
             modifier = Modifier.padding(bottom = 20.dp)
         ) {
             Button(
-                onClick = {  },
+                onClick = wrongOnClick,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.Red,
                     contentColor = Color.White
@@ -105,7 +108,7 @@ fun ChallengeScreenContent(
             }
             Spacer(modifier = Modifier.weight(1F))
             Button(
-                onClick = {},
+                onClick = correctOnClick,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = GreenColor,
                     contentColor = Color.White
