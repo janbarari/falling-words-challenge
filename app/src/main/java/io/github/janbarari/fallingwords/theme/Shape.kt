@@ -1,4 +1,4 @@
-package io.github.janbarari.fallingwords.ui.theme
+package io.github.janbarari.fallingwords.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
