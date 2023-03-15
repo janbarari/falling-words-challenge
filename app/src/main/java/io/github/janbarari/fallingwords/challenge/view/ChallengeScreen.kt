@@ -1,6 +1,5 @@
-package io.github.janbarari.fallingwords.challenge
+package io.github.janbarari.fallingwords.challenge.view
 
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,9 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import io.github.janbarari.fallingwords.intro.IntroScreen
 import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
@@ -36,7 +32,7 @@ fun ChallengeScreen(navHostController: NavHostController) {
         translation = "",
         correctOnClick = {
             navHostController.navigate(
-                route = ScoreScreen.generateRoute(10,13,99),
+                route = ScoreScreen.generateRoute(10, 13, 99),
             ) {
                 popUpTo(IntroScreen.route) { inclusive = true }
             }
