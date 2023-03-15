@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 object ChallengeScreen {
-    val route: String = "challenge"
+    const val route: String = "challenge"
 }
 
 @Composable

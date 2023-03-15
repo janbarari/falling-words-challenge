@@ -1,5 +1,6 @@
 package io.github.janbarari.fallingwords.intro
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,19 +18,24 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.R
+import io.github.janbarari.fallingwords.challenge.ChallengeScreen
 import io.github.janbarari.fallingwords.theme.BrandColor
 
 object IntroScreen {
-    val route: String = "intro"
+    const val route: String = "intro"
 }
 
 @Composable
-fun IntroScreen() {
+fun IntroScreen(navController: NavHostController) {
     IntroScreenContent(
         modifier = Modifier.fillMaxSize()
     ) {
-
+        navController.navigate(ChallengeScreen.route) {
+            //Skip Intro screen when back pressed
+            popUpTo(IntroScreen.route) { inclusive = true }
+        }
     }
 }
 
@@ -69,14 +75,17 @@ fun IntroScreenContent(
         Spacer(modifier = Modifier.height(76.dp))
         Button(
             onClick = startOnClick,
-            colors = ButtonDefaults.buttonColors(backgroundColor = BrandColor),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = BrandColor,
+                contentColor = Color.Black
+            ),
             shape = RoundedCornerShape(50),
         ) {
             Text(
                 text = "Start Game",
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 16.sp
             )
         }
 

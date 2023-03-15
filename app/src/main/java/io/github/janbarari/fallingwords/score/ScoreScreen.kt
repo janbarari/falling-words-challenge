@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 object ScoreScreen {
-    val route: String = "score"
+    const val route: String = "score"
 }
 
 @Composable

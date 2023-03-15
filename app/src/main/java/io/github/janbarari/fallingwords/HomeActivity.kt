@@ -33,17 +33,17 @@ class HomeActivity : ComponentActivity() {
                     composable(
                         route = IntroScreen.route
                     ) {
-                        IntroScreen()
-                    }
-                    composable(
-                        route = ScoreScreen.route
-                    ) {
-                        ScoreScreen()
+                        IntroScreen(navHostController)
                     }
                     composable(
                         route = ChallengeScreen.route
                     ) {
                         ChallengeScreen()
+                    }
+                    composable(
+                        route = ScoreScreen.route
+                    ) {
+                        ScoreScreen()
                     }
                 }
             }
