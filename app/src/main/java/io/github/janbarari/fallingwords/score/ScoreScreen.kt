@@ -26,18 +26,20 @@ import io.github.janbarari.fallingwords.score.state.ScoreViewState
 import io.github.janbarari.fallingwords.theme.BrandColor
 
 object ScoreScreen {
-    const val route: String = "score"
+    const val route: String = "score?correct={correct}&wrong={wrong}&unanswered={unanswered}"
+    fun generateRoute(correct: Int, wrong: Int, unanswered: Int): String {
+        return "score?correct=$correct&wrong=$wrong&unanswered=$unanswered"
+    }
 }
 
 @Composable
-fun ScoreScreen(navHostController: NavHostController) {
+fun ScoreScreen(
+    navHostController: NavHostController,
+    state: ScoreViewState
+) {
     ScoreScreenContent(
         modifier = Modifier.fillMaxSize(),
-        state = ScoreViewState(
-            correctAnswers = 0,
-            wrongAnswers = 0,
-            unanswered = 0
-        ),
+        state = state,
         tryAgainOnClick = {
             navHostController.navigate(IntroScreen.route) {
                 popUpTo(ScoreScreen.route) { inclusive = true }

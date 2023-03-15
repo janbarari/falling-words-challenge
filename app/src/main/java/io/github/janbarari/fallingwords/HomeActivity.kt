@@ -11,12 +11,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import io.github.janbarari.fallingwords.challenge.ChallengeScreen
 import io.github.janbarari.fallingwords.intro.IntroScreen
 import io.github.janbarari.fallingwords.score.ScoreScreen
+import io.github.janbarari.fallingwords.score.state.ScoreViewState
 import io.github.janbarari.fallingwords.theme.FallingWordsTheme
 
 class HomeActivity : ComponentActivity() {
@@ -41,9 +44,30 @@ class HomeActivity : ComponentActivity() {
                         ChallengeScreen(navHostController)
                     }
                     composable(
-                        route = ScoreScreen.route
+                        route = ScoreScreen.route,
+                        arguments = listOf(
+                            navArgument("correct") {
+                                type = NavType.IntType
+                            },
+                            navArgument("wrong") {
+                                type = NavType.IntType
+                            },
+                            navArgument("unanswered") {
+                                type = NavType.IntType
+                            }
+                        )
                     ) {
-                        ScoreScreen(navHostController)
+                        val correctAnswers = it.arguments?.getInt("correct")!!
+                        val wrongAnswers = it.arguments?.getInt("wrong")!!
+                        val unansweredQuestions = it.arguments?.getInt("unanswered")!!
+                        ScoreScreen(
+                            navHostController,
+                            ScoreViewState(
+                                correctAnswers,
+                                wrongAnswers,
+                                unansweredQuestions
+                            )
+                        )
                     }
                 }
             }
