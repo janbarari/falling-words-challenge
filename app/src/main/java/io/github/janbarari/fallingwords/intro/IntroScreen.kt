@@ -1,6 +1,5 @@
 package io.github.janbarari.fallingwords.intro
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -77,7 +76,7 @@ fun IntroScreenContent(
             onClick = startOnClick,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = BrandColor,
-                contentColor = Color.Black
+                contentColor = Color.White
             ),
             shape = RoundedCornerShape(50),
         ) {
