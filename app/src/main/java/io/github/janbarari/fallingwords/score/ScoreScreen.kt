@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.R
 import io.github.janbarari.fallingwords.intro.IntroScreen
+import io.github.janbarari.fallingwords.score.state.ScoreViewState
 import io.github.janbarari.fallingwords.theme.BrandColor
 
 object ScoreScreen {
@@ -32,6 +33,11 @@ object ScoreScreen {
 fun ScoreScreen(navHostController: NavHostController) {
     ScoreScreenContent(
         modifier = Modifier.fillMaxSize(),
+        state = ScoreViewState(
+            correctAnswers = 0,
+            wrongAnswers = 0,
+            unanswered = 0
+        ),
         tryAgainOnClick = {
             navHostController.navigate(IntroScreen.route) {
                 popUpTo(ScoreScreen.route) { inclusive = true }
@@ -43,7 +49,8 @@ fun ScoreScreen(navHostController: NavHostController) {
 @Composable
 fun ScoreScreenContent(
     modifier: Modifier,
-    tryAgainOnClick: () -> Unit
+    tryAgainOnClick: () -> Unit,
+    state: ScoreViewState
 ) {
     Column(
         modifier = modifier,
@@ -65,9 +72,9 @@ fun ScoreScreenContent(
         Spacer(modifier = Modifier.height(36.dp))
         Text(
             text = "Thank you for taking the time to submit your answers. Your score is as follows:\n" +
-                    "\nCorrect Answers: 14" +
-                    "\nIncorrect Answers: 12" +
-                    "\nUnanswered: 5" +
+                    "\nCorrect Answers: ${state.correctAnswers}" +
+                    "\nIncorrect Answers: ${state.wrongAnswers}" +
+                    "\nUnanswered: ${state.unanswered}" +
                     "\n" +
                     "\nIf you would like to improve your knowledge, we encourage you to try again. Best of luck!",
             fontFamily = FontFamily.Serif,
@@ -104,8 +111,14 @@ fun ScoreScreenPreview() {
     ScoreScreenContent(
         modifier = Modifier
             .background(Color.White)
-            .fillMaxSize()
-    ) {
+            .fillMaxSize(),
+        tryAgainOnClick = {
 
-    }
+        },
+        state = ScoreViewState(
+            correctAnswers = 10,
+            wrongAnswers = 12,
+            unanswered = 1
+        )
+    )
 }
