@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,31 +14,66 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import io.github.janbarari.fallingwords.challenge.aser.ChallengeAction
+import io.github.janbarari.fallingwords.challenge.aser.ChallengeEffect
+import io.github.janbarari.fallingwords.challenge.presentation.ChallengeViewModel
 import io.github.janbarari.fallingwords.intro.IntroScreen
 import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
+import io.github.janbarari.fallingwords.theme.RedColor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 object ChallengeScreen {
     const val route: String = "challenge"
 }
 
 @Composable
-fun ChallengeScreen(navHostController: NavHostController) {
+fun ChallengeScreen(
+    navHostController: NavHostController,
+    viewModel: ChallengeViewModel
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val state by viewModel.state.collectAsState()
+    var backgroundColor by remember { mutableStateOf(Color.White) }
+
+    LaunchedEffect(Unit) {
+        viewModel.action(ChallengeAction.LoadWords)
+        viewModel.effect.collectLatest {
+            when (it) {
+                is ChallengeEffect.CorrectAnswerEffect -> {
+                    backgroundColor = GreenColor
+                    delay(150)
+                    backgroundColor = Color.White
+                }
+                is ChallengeEffect.WrongAnswerEffect -> {
+                    backgroundColor = RedColor
+                    delay(150)
+                    backgroundColor = Color.White
+                }
+            }
+        }
+    }
+
     ChallengeScreenContent(
-        modifier = Modifier.fillMaxSize(),
-        title = "",
-        word = "",
-        translation = "",
+        modifier = Modifier
+            .background(color = backgroundColor)
+            .fillMaxSize(),
+        title = "${state.answeredWords.size + 1}/${state.words.size - 1}",
+        word = state.question,
+        translation = state.answer,
         correctOnClick = {
-            navHostController.navigate(
-                route = ScoreScreen.generateRoute(10, 13, 99),
-            ) {
-                popUpTo(IntroScreen.route) { inclusive = true }
+            coroutineScope.launch {
+                viewModel.action(ChallengeAction.CorrectSelected)
             }
         },
         wrongOnClick = {
-
+            coroutineScope.launch {
+                viewModel.action(ChallengeAction.WrongSelected)
+            }
         }
     )
 }

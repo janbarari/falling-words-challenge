@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.R
-import io.github.janbarari.fallingwords.challenge.ChallengeScreen
+import io.github.janbarari.fallingwords.challenge.view.ChallengeScreen
 import io.github.janbarari.fallingwords.theme.BrandColor
 
 object IntroScreen {

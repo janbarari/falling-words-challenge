@@ -1,4 +1,4 @@
-package io.github.janbarari.mvi
+package io.github.janbarari.architecture
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.*

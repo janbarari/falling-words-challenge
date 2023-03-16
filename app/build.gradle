@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -54,6 +55,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     implementation 'androidx.navigation:navigation-compose:2.5.3'
     implementation 'com.google.accompanist:accompanist-navigation-animation:0.28.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'
 
     implementation 'com.google.dagger:hilt-android:2.44'
     kapt 'com.google.dagger:hilt-android-compiler:2.44'

@@ -1,4 +1,4 @@
-package io.github.janbarari.mvi
+package io.github.janbarari.architecture
 
 import kotlinx.coroutines.flow.Flow
 interface ActionHandler<in A, S, E, R: Reducer<S>> {

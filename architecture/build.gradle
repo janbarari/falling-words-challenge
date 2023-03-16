@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'io.github.janbarari.mvi'
+    namespace 'io.github.janbarari.architecture'
     compileSdk 33
 
     defaultConfig {
-        minSdk 28
+        minSdk 24
         targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
