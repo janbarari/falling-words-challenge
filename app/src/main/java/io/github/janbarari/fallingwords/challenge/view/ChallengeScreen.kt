@@ -73,7 +73,7 @@ fun ChallengeScreen(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxSize(),
-        title = "${state.result.answeredWords.size}/${state.words.size}",
+        title = "${state.result.answeredWords.size + 1}/${state.words.size + 1}",
         word = state.current?.word ?: "",
         translation = state.current?.translation ?: "",
         progress = progress,
