@@ -2,6 +2,8 @@ package io.github.janbarari.fallingwords.challenge.aser
 
 import io.github.janbarari.architecture.Reducer
 import io.github.janbarari.fallingwords.challenge.domain.entity.Word
+import io.github.janbarari.fallingwords.challenge.presentation.state.CurrentWordState
+import io.github.janbarari.fallingwords.challenge.presentation.state.ResultState
 
 sealed class ChallengeReducer(
     reducer: Reducer<ChallengeState>
@@ -9,16 +11,26 @@ sealed class ChallengeReducer(
 
     data class WordsLoaded(
         val words: List<Word>,
-        val question: String,
-        val answer: String,
-        val isAnswerCorrect: Boolean
+        val currentWordState: CurrentWordState,
+        val resultState: ResultState
     ) : ChallengeReducer(
         {
             it.copy(
                 words = words,
-                question = question,
-                answer = answer,
-                isAnswerCorrect = isAnswerCorrect
+                current = currentWordState,
+                result = resultState
+            )
+        }
+    )
+
+    data class TimeUp(
+        val currentWordState: CurrentWordState,
+        val resultState: ResultState
+    ): ChallengeReducer(
+        {
+            it.copy(
+                current = currentWordState,
+                result = resultState
             )
         }
     )
@@ -26,7 +38,7 @@ sealed class ChallengeReducer(
     object CorrectAnswerSelected : ChallengeReducer(
         {
             it.copy(
-                answeredWords =
+
             )
         }
     )

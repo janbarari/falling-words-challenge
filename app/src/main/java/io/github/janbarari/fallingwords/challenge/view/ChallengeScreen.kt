@@ -14,13 +14,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.challenge.aser.ChallengeAction
 import io.github.janbarari.fallingwords.challenge.aser.ChallengeEffect
 import io.github.janbarari.fallingwords.challenge.presentation.ChallengeViewModel
-import io.github.janbarari.fallingwords.intro.IntroScreen
-import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
 import io.github.janbarari.fallingwords.theme.RedColor
 import kotlinx.coroutines.delay
@@ -39,17 +36,18 @@ fun ChallengeScreen(
     val coroutineScope = rememberCoroutineScope()
     val state by viewModel.state.collectAsState()
     var backgroundColor by remember { mutableStateOf(Color.White) }
+    val progress by remember { mutableStateOf(0f) }
 
     LaunchedEffect(Unit) {
-        viewModel.action(ChallengeAction.LoadWords)
+        viewModel.action(ChallengeAction.Load)
         viewModel.effect.collectLatest {
             when (it) {
-                is ChallengeEffect.CorrectAnswerEffect -> {
+                is ChallengeEffect.OnCorrectAnswerSelected -> {
                     backgroundColor = GreenColor
                     delay(150)
                     backgroundColor = Color.White
                 }
-                is ChallengeEffect.WrongAnswerEffect -> {
+                is ChallengeEffect.OnWrongAnswerSelected -> {
                     backgroundColor = RedColor
                     delay(150)
                     backgroundColor = Color.White
@@ -62,17 +60,18 @@ fun ChallengeScreen(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxSize(),
-        title = "${state.answeredWords.size + 1}/${state.words.size - 1}",
-        word = state.question,
-        translation = state.answer,
+        title = "${state.result.answeredWords.size}/${state.words.size}",
+        word = state.current.word,
+        translation = state.current.translation,
+        progress = progress,
         correctOnClick = {
             coroutineScope.launch {
-                viewModel.action(ChallengeAction.CorrectSelected)
+                viewModel.action(ChallengeAction.CorrectButtonClicked)
             }
         },
         wrongOnClick = {
             coroutineScope.launch {
-                viewModel.action(ChallengeAction.WrongSelected)
+                viewModel.action(ChallengeAction.WrongButtonClicked)
             }
         }
     )
@@ -84,6 +83,7 @@ fun ChallengeScreenContent(
     title: String,
     word: String,
     translation: String,
+    progress: Float,
     correctOnClick: () -> Unit,
     wrongOnClick: () -> Unit
 ) {
@@ -96,7 +96,7 @@ fun ChallengeScreenContent(
                 .height(10.dp)
                 .fillMaxWidth(),
             color = GreenColor,
-            progress = 0.7f
+            progress = progress
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -178,6 +178,7 @@ fun ChallengeScreenPreview() {
         title = "1/100",
         word = "primary school",
         translation = "escuela primaria",
+        progress = 0.5f,
         correctOnClick = {
 
         },

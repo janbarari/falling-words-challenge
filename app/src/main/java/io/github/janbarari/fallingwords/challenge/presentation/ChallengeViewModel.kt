@@ -10,18 +10,20 @@ import kotlin.reflect.KClass
 @HiltViewModel
 class ChallengeViewModel @Inject constructor(
     challengeEffectHandler: ChallengeEffectHandler,
-    private val loadWordsActionHandler: LoadWordsActionHandler,
-    private val correctSelectedActionHandler: CorrectSelectedActionHandler,
-    private val wrongSelectedActionHandler: WrongSelectedActionHandler
+    private val loadActionHandler: LoadActionHandler,
+    private val correctButtonClickedActionHandler: CorrectSelectedActionHandler,
+    private val wrongButtonClickedActionHandler: WrongSelectedActionHandler,
+    private val pickWordActionHandler: PickWordActionHandler
 ) : BaseViewModel<ChallengeAction, ChallengeState, ChallengeEffect, ChallengeReducer>(
     challengeEffectHandler,
     ChallengeState.Default
 ) {
     override fun getActionHandlers(): Set<Pair<KClass<out ChallengeAction>, ActionHandler<*, ChallengeState, ChallengeEffect, ChallengeReducer>>> {
         return setOf(
-            ChallengeAction.LoadWords::class to loadWordsActionHandler,
-            ChallengeAction.CorrectSelected::class to correctSelectedActionHandler,
-            ChallengeAction.WrongSelected::class to wrongSelectedActionHandler
+            ChallengeAction.Load::class to loadActionHandler,
+            ChallengeAction.CorrectButtonClicked::class to correctButtonClickedActionHandler,
+            ChallengeAction.WrongButtonClicked::class to wrongButtonClickedActionHandler,
+            ChallengeAction.PickWord::class to pickWordActionHandler
         )
     }
 }

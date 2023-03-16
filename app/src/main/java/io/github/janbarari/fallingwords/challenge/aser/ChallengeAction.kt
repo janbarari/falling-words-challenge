@@ -1,7 +1,8 @@
 package io.github.janbarari.fallingwords.challenge.aser
 
 sealed class ChallengeAction {
-    object LoadWords: ChallengeAction()
-    object CorrectSelected: ChallengeAction()
-    object WrongSelected: ChallengeAction()
+    object Load: ChallengeAction()
+    object PickWord: ChallengeAction()
+    object CorrectButtonClicked: ChallengeAction()
+    object WrongButtonClicked: ChallengeAction()
 }

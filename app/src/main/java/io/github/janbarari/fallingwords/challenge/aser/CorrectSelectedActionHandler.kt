@@ -12,12 +12,12 @@ class CorrectSelectedActionHandler @Inject constructor() :
         state: ChallengeState,
         effect: suspend (ChallengeEffect) -> Unit
     ): Flow<ChallengeReducer> = flow {
-        if (state.isAnswerCorrect) {
+        if (state.current.isTranslationCorrect) {
             emit(ChallengeReducer.CorrectAnswerSelected)
-            effect(ChallengeEffect.CorrectAnswerEffect)
+            effect(ChallengeEffect.OnCorrectAnswerSelected)
         } else {
             emit(ChallengeReducer.WrongAnswerSelected)
-            effect(ChallengeEffect.WrongAnswerEffect)
+            effect(ChallengeEffect.OnWrongAnswerSelected)
         }
     }
 }

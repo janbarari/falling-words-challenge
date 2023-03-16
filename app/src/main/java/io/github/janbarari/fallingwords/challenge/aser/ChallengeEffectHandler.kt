@@ -10,21 +10,16 @@ import javax.inject.Inject
 class ChallengeEffectHandler @Inject constructor(
     @ApplicationContext private val context: Context
 ) : EffectHandler<ChallengeEffect>() {
-
     override suspend fun handleEffect(effect: ChallengeEffect) {
         when (effect) {
-            ChallengeEffect.CorrectAnswerEffect -> executeCorrectAnswerEffect()
-            ChallengeEffect.WrongAnswerEffect -> executeWrongAnswerEffect()
+            ChallengeEffect.OnCorrectAnswerSelected -> {
+                MediaPlayer.create(context, R.raw.correct).start()
+                effects.emit(ChallengeEffect.OnCorrectAnswerSelected)
+            }
+            ChallengeEffect.OnWrongAnswerSelected -> {
+                MediaPlayer.create(context, R.raw.wrong).start()
+                effects.emit(ChallengeEffect.OnWrongAnswerSelected)
+            }
         }
-    }
-
-    private suspend fun executeCorrectAnswerEffect() {
-        MediaPlayer.create(context, R.raw.correct).start()
-        effects.emit(ChallengeEffect.CorrectAnswerEffect)
-    }
-
-    private suspend fun executeWrongAnswerEffect() {
-        MediaPlayer.create(context, R.raw.wrong).start()
-        effects.emit(ChallengeEffect.WrongAnswerEffect)
     }
 }
