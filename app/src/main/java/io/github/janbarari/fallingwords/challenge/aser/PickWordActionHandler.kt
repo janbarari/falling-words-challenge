@@ -1,7 +1,7 @@
 package io.github.janbarari.fallingwords.challenge.aser
 
 import io.github.janbarari.architecture.ActionHandler
-import io.github.janbarari.fallingwords.challenge.presentation.state.CurrentWordState
+import io.github.janbarari.fallingwords.challenge.presentation.state.QuestionState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
@@ -14,32 +14,32 @@ class PickWordActionHandler @Inject constructor() :
         state: ChallengeState,
         effect: suspend (ChallengeEffect) -> Unit
     ): Flow<ChallengeReducer> = flow {
-        // Pick a new word
+        // Pick a random unique word
         val word = state.words.filter {
-            state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
+            state.result?.answeredWords?.any { answered -> answered.word == it.textEng }?.not() == true
         }.random()
+
+        // Use random boolean to choose correct or wrong answer for the question
         val isTranslationCorrect: Boolean = Random().nextBoolean()
+        // Assign the correct translation or pick from others
         val translation: String = if (isTranslationCorrect) {
             word.textSpa
         } else {
             state.words.filter {
-                state.result.answeredWords.any { answered -> answered.word == it.textEng }
-                    .not() &&
-                        it.textEng != word.textEng
+                state.result?.answeredWords?.any { answered -> answered.word == it.textEng }?.not() == true
+                        && it.textEng != word.textEng
             }.random().textSpa
         }
-        val currentWordState = CurrentWordState(
+
+        val questionState = QuestionState(
             word = word.textEng,
             translation = translation,
             isTranslationCorrect = isTranslationCorrect
         )
-        val resultState = state.result
-        resultState.answeredWords.add(state.current)
-        resultState.unanswered += 1
+
         emit(
-            ChallengeReducer.TimeUp(
-                currentWordState = currentWordState,
-                resultState = resultState
+            ChallengeReducer.UpdateQuestion(
+                questionState = questionState
             )
         )
     }

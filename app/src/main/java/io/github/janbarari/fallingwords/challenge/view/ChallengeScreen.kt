@@ -39,6 +39,7 @@ fun ChallengeScreen(
     val progress by remember { mutableStateOf(0f) }
 
     LaunchedEffect(Unit) {
+        viewModel.action(ChallengeAction.PickWord(false))
         viewModel.effect.collectLatest {
             when (it) {
                 is ChallengeEffect.OnCorrectAnswerSelected -> {
@@ -60,8 +61,8 @@ fun ChallengeScreen(
             .background(color = backgroundColor)
             .fillMaxSize(),
         title = "${state.result.answeredWords.size + 1}/${state.words.size}",
-        word = state.current.word,
-        translation = state.current.translation,
+        word = state.current?.word ?: "",
+        translation = state.current?.translation ?: "",
         progress = progress,
         correctOnClick = {
             coroutineScope.launch {

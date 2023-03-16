@@ -2,7 +2,7 @@ package io.github.janbarari.fallingwords.challenge.aser
 
 import io.github.janbarari.architecture.Reducer
 import io.github.janbarari.fallingwords.challenge.domain.entity.Word
-import io.github.janbarari.fallingwords.challenge.presentation.state.CurrentWordState
+import io.github.janbarari.fallingwords.challenge.presentation.state.QuestionState
 import io.github.janbarari.fallingwords.challenge.presentation.state.ResultState
 
 sealed class ChallengeReducer(
@@ -17,14 +17,12 @@ sealed class ChallengeReducer(
         }
     )
 
-    data class TimeUp(
-        val currentWordState: CurrentWordState,
-        val resultState: ResultState
+    data class UpdateQuestion(
+        val questionState: QuestionState
     ): ChallengeReducer(
         {
             it.copy(
-                current = currentWordState,
-                result = resultState
+                current = questionState
             )
         }
     )

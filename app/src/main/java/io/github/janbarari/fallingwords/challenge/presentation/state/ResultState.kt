@@ -4,7 +4,7 @@ data class ResultState(
     var correct: Int = 0,
     var wrong: Int = 0,
     var unanswered: Int = 0,
-    val answeredWords: MutableList<CurrentWordState> = mutableListOf()
+    val answeredWords: MutableList<QuestionState> = mutableListOf()
 ) {
     companion object {
         val Default = ResultState()

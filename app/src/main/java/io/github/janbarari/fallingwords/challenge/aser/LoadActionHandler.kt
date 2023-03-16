@@ -2,10 +2,8 @@ package io.github.janbarari.fallingwords.challenge.aser
 
 import io.github.janbarari.architecture.ActionHandler
 import io.github.janbarari.fallingwords.challenge.domain.usecase.GetWordsUseCase
-import io.github.janbarari.fallingwords.challenge.presentation.state.CurrentWordState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.Random
 import javax.inject.Inject
 
 class LoadActionHandler @Inject constructor(
