@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.challenge.aser.ChallengeAction
 import io.github.janbarari.fallingwords.challenge.aser.ChallengeEffect
 import io.github.janbarari.fallingwords.challenge.presentation.ChallengeViewModel
+import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
 import io.github.janbarari.fallingwords.theme.RedColor
 import kotlinx.coroutines.delay
@@ -52,6 +53,18 @@ fun ChallengeScreen(
                     delay(150)
                     backgroundColor = Color.White
                 }
+                ChallengeEffect.Finish -> {
+                    val route = ScoreScreen.generateRoute(
+                        correct = state.result.correct,
+                        wrong = state.result.wrong,
+                        unanswered = state.result.unanswered
+                    )
+                    navHostController.navigate(route) {
+                        popUpTo(ChallengeScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -60,7 +73,7 @@ fun ChallengeScreen(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxSize(),
-        title = "${state.result.answeredWords.size + 1}/${state.words.size}",
+        title = "${state.result.answeredWords.size}/${state.words.size}",
         word = state.current?.word ?: "",
         translation = state.current?.translation ?: "",
         progress = progress,

@@ -9,6 +9,8 @@ class GetWordsUseCase @Inject constructor(
     private val repo: WordsRepository
 ) : UseCaseNoInput<List<Word>>() {
     override suspend fun execute(): List<Word> {
-        return repo.getWords()
+        val list = repo.getWords()
+
+        return list.dropLast(288)
     }
 }

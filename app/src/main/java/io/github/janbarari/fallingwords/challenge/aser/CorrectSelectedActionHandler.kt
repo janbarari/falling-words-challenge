@@ -1,8 +1,10 @@
 package io.github.janbarari.fallingwords.challenge.aser
 
 import io.github.janbarari.architecture.ActionHandler
+import io.github.janbarari.fallingwords.challenge.presentation.state.QuestionState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.*
 import javax.inject.Inject
 
 class CorrectSelectedActionHandler @Inject constructor() :
@@ -18,6 +20,44 @@ class CorrectSelectedActionHandler @Inject constructor() :
         } else {
             emit(ChallengeReducer.WrongAnswerSelected)
             effect(ChallengeEffect.OnWrongAnswerSelected)
+        }
+
+        if (state.result.answeredWords.size == state.words.size) {
+            effect(ChallengeEffect.Finish)
+        } else {
+
+            // Pick a random unique word
+            val word = state.words.filter {
+                state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
+            }.random()
+
+            // Use random boolean to choose correct or wrong answer for the question
+            val isTranslationCorrect: Boolean = Random().nextBoolean()
+            // Assign the correct translation or pick from others
+            val translation: String = if (isTranslationCorrect) {
+                word.textSpa
+            } else {
+                state.words.filter {
+                    it.textEng != word.textEng
+                }.random().textSpa
+            }
+
+            val questionState = QuestionState(
+                word = word.textEng,
+                translation = translation,
+                isTranslationCorrect = isTranslationCorrect
+            )
+
+            val resultState = state.result
+            resultState.correct += 1
+            resultState.answeredWords.add(questionState)
+
+            emit(
+                ChallengeReducer.UpdateQuestion(
+                    questionState = questionState,
+                    resultState = resultState
+                )
+            )
         }
     }
 }

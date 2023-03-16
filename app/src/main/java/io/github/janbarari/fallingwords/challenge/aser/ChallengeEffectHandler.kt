@@ -20,6 +20,9 @@ class ChallengeEffectHandler @Inject constructor(
                 MediaPlayer.create(context, R.raw.wrong).start()
                 effects.emit(ChallengeEffect.OnWrongAnswerSelected)
             }
+            ChallengeEffect.Finish -> {
+                effects.emit(ChallengeEffect.Finish)
+            }
         }
     }
 }

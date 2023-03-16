@@ -18,11 +18,13 @@ sealed class ChallengeReducer(
     )
 
     data class UpdateQuestion(
-        val questionState: QuestionState
+        val questionState: QuestionState,
+        val resultState: ResultState
     ): ChallengeReducer(
         {
             it.copy(
-                current = questionState
+                current = questionState,
+                result = resultState
             )
         }
     )

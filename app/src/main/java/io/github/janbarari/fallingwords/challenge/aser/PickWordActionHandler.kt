@@ -8,15 +8,15 @@ import java.util.*
 import javax.inject.Inject
 
 class PickWordActionHandler @Inject constructor() :
-    ActionHandler<ChallengeAction, ChallengeState, ChallengeEffect, ChallengeReducer> {
+    ActionHandler<ChallengeAction.PickWord, ChallengeState, ChallengeEffect, ChallengeReducer> {
     override fun handle(
-        action: ChallengeAction,
+        action: ChallengeAction.PickWord,
         state: ChallengeState,
         effect: suspend (ChallengeEffect) -> Unit
     ): Flow<ChallengeReducer> = flow {
         // Pick a random unique word
         val word = state.words.filter {
-            state.result?.answeredWords?.any { answered -> answered.word == it.textEng }?.not() == true
+            state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
         }.random()
 
         // Use random boolean to choose correct or wrong answer for the question
@@ -26,7 +26,7 @@ class PickWordActionHandler @Inject constructor() :
             word.textSpa
         } else {
             state.words.filter {
-                state.result?.answeredWords?.any { answered -> answered.word == it.textEng }?.not() == true
+                state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
                         && it.textEng != word.textEng
             }.random().textSpa
         }
@@ -39,7 +39,8 @@ class PickWordActionHandler @Inject constructor() :
 
         emit(
             ChallengeReducer.UpdateQuestion(
-                questionState = questionState
+                questionState = questionState,
+                resultState = state.result
             )
         )
     }

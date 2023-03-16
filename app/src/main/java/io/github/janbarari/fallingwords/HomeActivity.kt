@@ -59,7 +59,6 @@ class HomeActivity : ComponentActivity() {
                         val wrongAnswers = it.arguments?.getInt("wrong")!!
                         val unansweredQuestions = it.arguments?.getInt("unanswered")!!
                         ScoreScreen(
-                            navHostController,
                             ScoreViewState(
                                 correctAnswers,
                                 wrongAnswers,

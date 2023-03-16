@@ -3,9 +3,6 @@ package io.github.janbarari.fallingwords.score
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,11 +16,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import io.github.janbarari.fallingwords.R
-import io.github.janbarari.fallingwords.intro.IntroScreen
 import io.github.janbarari.fallingwords.score.state.ScoreViewState
-import io.github.janbarari.fallingwords.theme.BrandColor
 
 object ScoreScreen {
     const val route: String = "score?correct={correct}&wrong={wrong}&unanswered={unanswered}"
@@ -34,24 +28,17 @@ object ScoreScreen {
 
 @Composable
 fun ScoreScreen(
-    navHostController: NavHostController,
     state: ScoreViewState
 ) {
     ScoreScreenContent(
         modifier = Modifier.fillMaxSize(),
-        state = state,
-        tryAgainOnClick = {
-            navHostController.navigate(IntroScreen.route) {
-                popUpTo(ScoreScreen.route) { inclusive = true }
-            }
-        }
+        state = state
     )
 }
 
 @Composable
 fun ScoreScreenContent(
     modifier: Modifier,
-    tryAgainOnClick: () -> Unit,
     state: ScoreViewState
 ) {
     Column(
@@ -87,23 +74,6 @@ fun ScoreScreenContent(
             textAlign = TextAlign.Justify,
             modifier = Modifier.width(316.dp)
         )
-        Spacer(modifier = Modifier.height(76.dp))
-        Button(
-            onClick = tryAgainOnClick,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = BrandColor,
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(50),
-        ) {
-            Text(
-                text = "Try Again",
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
-
     }
 }
 
@@ -114,9 +84,6 @@ fun ScoreScreenPreview() {
         modifier = Modifier
             .background(Color.White)
             .fillMaxSize(),
-        tryAgainOnClick = {
-
-        },
         state = ScoreViewState(
             correctAnswers = 10,
             wrongAnswers = 12,
