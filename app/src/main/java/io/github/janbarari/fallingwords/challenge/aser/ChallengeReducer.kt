@@ -9,17 +9,11 @@ sealed class ChallengeReducer(
     reducer: Reducer<ChallengeState>
 ) : Reducer<ChallengeState> by reducer {
 
-    data class WordsLoaded(
-        val words: List<Word>,
-        val currentWordState: CurrentWordState,
-        val resultState: ResultState
+    data class Loaded(
+        val words: List<Word>
     ) : ChallengeReducer(
         {
-            it.copy(
-                words = words,
-                current = currentWordState,
-                result = resultState
-            )
+            it.copy(words = words)
         }
     )
 
