@@ -32,7 +32,7 @@ A mini word game to learn spanish provided by Babel as coding challenge.
 - Decoupled MVI architecture
 - Clean architecture
 
-### Why Decouple MVI Architecture?
+### Why Decoupled MVI Architecture?
 Here is an article that I introduced decoupled MVI architecture
 [Decoupled MVI Architecture](https://betterprogramming.pub/introducing-decoupled-mvi-approach-for-android-in-2023-b93e4a16fb1b?source=user_profile---------0----------------------------)
 
