@@ -17,21 +17,17 @@ class CheckAnswerActionHandler @Inject constructor() :
         if (action.isCorrectSelected) {
             if (state.current?.isTranslationCorrect == true) {
                 state.result.correct += 1
-                emit(ChallengeReducer.CorrectAnswerSelected)
                 effect(ChallengeEffect.OnCorrectAnswerSelected)
             } else {
                 state.result.wrong += 1
-                emit(ChallengeReducer.WrongAnswerSelected)
                 effect(ChallengeEffect.OnWrongAnswerSelected)
             }
         } else if (action.isWrongSelected) {
             if (state.current?.isTranslationCorrect == true) {
                 state.result.wrong += 1
-                emit(ChallengeReducer.WrongAnswerSelected)
                 effect(ChallengeEffect.OnWrongAnswerSelected)
             } else {
                 state.result.correct += 1
-                emit(ChallengeReducer.CorrectAnswerSelected)
                 effect(ChallengeEffect.OnCorrectAnswerSelected)
             }
         } else if (action.isNoAnswer) {
@@ -42,11 +38,15 @@ class CheckAnswerActionHandler @Inject constructor() :
             effect(ChallengeEffect.Finish)
         } else {
             // Pick a random unique word
-            val word = state.words.filter { word ->
+            var list = state.words.filter { word ->
                 state.result.askedWords.any { askedWord ->
                     askedWord.word == word.textEng
                 }.not()
-            }.random()
+            }
+            if (list.isEmpty()) {
+                list = state.words
+            }
+            val word = list.random()
             // Use random boolean to choose correct or wrong answer for the question.
             val isTranslationCorrect: Boolean = Random().nextBoolean()
             // Assign the correct translation or pick from others.

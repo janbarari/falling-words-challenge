@@ -35,6 +35,7 @@ class PickWordActionHandler @Inject constructor() :
             translation = translation,
             isTranslationCorrect = isTranslationCorrect
         )
+        state.result.askedWords.add(questionState)
         emit(
             ChallengeReducer.UpdateQuestion(
                 questionState = questionState,

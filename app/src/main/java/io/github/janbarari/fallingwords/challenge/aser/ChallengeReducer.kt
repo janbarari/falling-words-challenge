@@ -8,7 +8,6 @@ import io.github.janbarari.fallingwords.challenge.presentation.state.ResultState
 sealed class ChallengeReducer(
     reducer: Reducer<ChallengeState>
 ) : Reducer<ChallengeState> by reducer {
-
     data class Loaded(
         val words: List<Word>
     ) : ChallengeReducer(
@@ -18,7 +17,6 @@ sealed class ChallengeReducer(
             )
         }
     )
-
     data class UpdateQuestion(
         val questionState: QuestionState,
         val resultState: ResultState
@@ -30,21 +28,4 @@ sealed class ChallengeReducer(
             )
         }
     )
-
-    object CorrectAnswerSelected : ChallengeReducer(
-        {
-            it.copy(
-
-            )
-        }
-    )
-
-    object WrongAnswerSelected : ChallengeReducer(
-        {
-            it.copy(
-
-            )
-        }
-    )
-
 }
