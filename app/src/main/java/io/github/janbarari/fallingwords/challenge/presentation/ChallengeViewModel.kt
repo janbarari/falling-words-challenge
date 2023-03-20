@@ -13,8 +13,7 @@ import kotlin.reflect.KClass
 class ChallengeViewModel @Inject constructor(
     challengeEffectHandler: ChallengeEffectHandler,
     private val loadActionHandler: LoadActionHandler,
-    private val correctButtonClickedActionHandler: CorrectSelectedActionHandler,
-    private val wrongButtonClickedActionHandler: WrongSelectedActionHandler,
+    private val checkAnswerActionHandler: CheckAnswerActionHandler,
     private val pickWordActionHandler: PickWordActionHandler
 ) : BaseViewModel<ChallengeAction, ChallengeState, ChallengeEffect, ChallengeReducer>(
     challengeEffectHandler,
@@ -30,8 +29,7 @@ class ChallengeViewModel @Inject constructor(
     override fun getActionHandlers(): Set<Pair<KClass<out ChallengeAction>, ActionHandler<*, ChallengeState, ChallengeEffect, ChallengeReducer>>> {
         return setOf(
             ChallengeAction.Load::class to loadActionHandler,
-            ChallengeAction.CorrectButtonClicked::class to correctButtonClickedActionHandler,
-            ChallengeAction.WrongButtonClicked::class to wrongButtonClickedActionHandler,
+            ChallengeAction.ChooseAnswer::class to checkAnswerActionHandler,
             ChallengeAction.PickWord::class to pickWordActionHandler
         )
     }

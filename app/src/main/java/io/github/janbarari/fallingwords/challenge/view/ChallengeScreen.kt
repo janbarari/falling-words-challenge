@@ -1,7 +1,5 @@
 package io.github.janbarari.fallingwords.challenge.view
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -25,9 +22,7 @@ import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
 import io.github.janbarari.fallingwords.theme.RedColor
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlin.coroutines.CoroutineContext
 
 object ChallengeScreen {
     const val route: String = "challenge"
@@ -82,7 +77,11 @@ fun ChallengeScreen(
                             progress += 0.025f
                             delay(100)
                             if (progress >= 1f) {
-                                viewModel.action(ChallengeAction.PickWord(true))
+                                viewModel.action(
+                                    ChallengeAction.ChooseAnswer(
+                                        isNoAnswer = true
+                                    )
+                                )
                             }
                         }
                     }
@@ -100,18 +99,26 @@ fun ChallengeScreen(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxSize(),
-        title = "${state.result.answeredWords.size}/${state.words.size}",
+        title = "${state.result.askedWords.size}/${state.words.size}",
         word = state.current?.word ?: "",
         translation = state.current?.translation ?: "",
         progress = progress,
         correctOnClick = {
             coroutineScope.launch {
-                viewModel.action(ChallengeAction.CorrectButtonClicked)
+                viewModel.action(
+                    ChallengeAction.ChooseAnswer(
+                        isCorrectSelected = true
+                    )
+                )
             }
         },
         wrongOnClick = {
             coroutineScope.launch {
-                viewModel.action(ChallengeAction.WrongButtonClicked)
+                viewModel.action(
+                    ChallengeAction.ChooseAnswer(
+                        isWrongSelected = true
+                    )
+                )
             }
         }
     )

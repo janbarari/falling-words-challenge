@@ -15,10 +15,11 @@ class PickWordActionHandler @Inject constructor() :
         effect: suspend (ChallengeEffect) -> Unit
     ): Flow<ChallengeReducer> = flow {
         // Pick a random unique word
-        val word = state.words.filter {
-            state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
+        val word = state.words.filter { word ->
+            state.result.askedWords.any { askedWord ->
+                askedWord.word == word.textEng
+            }.not()
         }.random()
-
         // Use random boolean to choose correct or wrong answer for the question
         val isTranslationCorrect: Boolean = Random().nextBoolean()
         // Assign the correct translation or pick from others
@@ -26,26 +27,14 @@ class PickWordActionHandler @Inject constructor() :
             word.textSpa
         } else {
             state.words.filter {
-                state.result.answeredWords.any { answered -> answered.word == it.textEng }.not()
-                        && it.textEng != word.textEng
+                it.textEng != word.textEng
             }.random().textSpa
         }
-
         val questionState = QuestionState(
             word = word.textEng,
             translation = translation,
             isTranslationCorrect = isTranslationCorrect
         )
-
-        if (action.isTimeUp) {
-            if (state.result.answeredWords.size == state.words.size) {
-                effect(ChallengeEffect.Finish)
-            } else {
-                state.result.unanswered += 1
-                state.result.answeredWords.add(state.current!!)
-            }
-        }
-
         emit(
             ChallengeReducer.UpdateQuestion(
                 questionState = questionState,

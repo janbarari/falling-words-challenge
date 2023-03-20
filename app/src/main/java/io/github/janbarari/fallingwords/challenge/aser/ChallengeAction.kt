@@ -5,6 +5,9 @@ sealed class ChallengeAction {
     data class PickWord(
         val isTimeUp: Boolean
     ): ChallengeAction()
-    object CorrectButtonClicked: ChallengeAction()
-    object WrongButtonClicked: ChallengeAction()
+    data class ChooseAnswer(
+        val isCorrectSelected: Boolean = false,
+        val isWrongSelected: Boolean = false,
+        val isNoAnswer: Boolean = false
+    ): ChallengeAction()
 }
