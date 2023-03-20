@@ -24,6 +24,9 @@
 ## Falling Words Game Challenge by Babbel
 A mini word game to learn spanish provided by Babel as coding challenge. 
 
+### Screenshots
+![](screenshot.png)
+
 ### Stack
 - Kotlin
 - Coroutines
@@ -33,14 +36,15 @@ A mini word game to learn spanish provided by Babel as coding challenge.
 - Clean architecture
 
 ### Why Decoupled MVI Architecture?
-Here is an article that I introduced decoupled MVI architecture
+I wrote an article introducing the decoupled MVI architecture
 [Decoupled MVI Architecture](https://betterprogramming.pub/introducing-decoupled-mvi-approach-for-android-in-2023-b93e4a16fb1b?source=user_profile---------0----------------------------)
 
 ### Time Limit
-As it requested to be less than 4-8 hours, It took around 12 hours of work.
+As requested to be less than 4-8 hours, It took around 11 hours of work.
 
 ### What would do differently if I had more time?
-Since I already exceed the task requested time, I would work/add:
+Since I'm over the deadline, I might work on/add:
 - Unit and UI tests
 - Modularization
 - Better UX
+If I had more time.
