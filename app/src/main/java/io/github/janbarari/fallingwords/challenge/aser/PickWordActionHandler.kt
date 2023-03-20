@@ -37,11 +37,21 @@ class PickWordActionHandler @Inject constructor() :
             isTranslationCorrect = isTranslationCorrect
         )
 
+        if (action.isTimeUp) {
+            if (state.result.answeredWords.size == state.words.size) {
+                effect(ChallengeEffect.Finish)
+            } else {
+                state.result.unanswered += 1
+                state.result.answeredWords.add(state.current!!)
+            }
+        }
+
         emit(
             ChallengeReducer.UpdateQuestion(
                 questionState = questionState,
                 resultState = state.result
             )
         )
+        effect(ChallengeEffect.StartTimer)
     }
 }

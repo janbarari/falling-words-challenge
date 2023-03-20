@@ -23,6 +23,9 @@ class ChallengeEffectHandler @Inject constructor(
             ChallengeEffect.Finish -> {
                 effects.emit(ChallengeEffect.Finish)
             }
+            ChallengeEffect.StartTimer -> {
+                effects.emit(ChallengeEffect.StartTimer)
+            }
         }
     }
 }

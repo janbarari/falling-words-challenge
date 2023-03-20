@@ -13,7 +13,9 @@ sealed class ChallengeReducer(
         val words: List<Word>
     ) : ChallengeReducer(
         {
-            it.copy(words = words)
+            it.copy(
+                words = words
+            )
         }
     )
 

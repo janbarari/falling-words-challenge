@@ -1,5 +1,7 @@
 package io.github.janbarari.fallingwords.challenge.view
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -21,9 +24,10 @@ import io.github.janbarari.fallingwords.challenge.presentation.ChallengeViewMode
 import io.github.janbarari.fallingwords.score.ScoreScreen
 import io.github.janbarari.fallingwords.theme.GreenColor
 import io.github.janbarari.fallingwords.theme.RedColor
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 object ChallengeScreen {
     const val route: String = "challenge"
@@ -34,26 +38,31 @@ fun ChallengeScreen(
     navHostController: NavHostController,
     viewModel: ChallengeViewModel
 ) {
+    var timerCoroutineScope: Job? = null
     val coroutineScope = rememberCoroutineScope()
     val state by viewModel.state.collectAsState()
     var backgroundColor by remember { mutableStateOf(Color.White) }
-    val progress by remember { mutableStateOf(0f) }
+    var progress by remember { mutableStateOf(0f) }
 
     LaunchedEffect(Unit) {
-        viewModel.action(ChallengeAction.PickWord(false))
         viewModel.effect.collectLatest {
             when (it) {
                 is ChallengeEffect.OnCorrectAnswerSelected -> {
-                    backgroundColor = GreenColor
-                    delay(150)
-                    backgroundColor = Color.White
+                    coroutineScope.launch {
+                        backgroundColor = GreenColor
+                        delay(200)
+                        backgroundColor = Color.White
+                    }
                 }
                 is ChallengeEffect.OnWrongAnswerSelected -> {
-                    backgroundColor = RedColor
-                    delay(150)
-                    backgroundColor = Color.White
+                    coroutineScope.launch {
+                        backgroundColor = RedColor
+                        delay(200)
+                        backgroundColor = Color.White
+                    }
                 }
-                ChallengeEffect.Finish -> {
+                is ChallengeEffect.Finish -> {
+                    timerCoroutineScope?.cancel()
                     val route = ScoreScreen.generateRoute(
                         correct = state.result.correct,
                         wrong = state.result.wrong,
@@ -65,15 +74,33 @@ fun ChallengeScreen(
                         }
                     }
                 }
+                is ChallengeEffect.StartTimer -> {
+                    timerCoroutineScope?.cancel()
+                    timerCoroutineScope = CoroutineScope(Dispatchers.Main).launch {
+                        progress = 0f
+                        (0..40).forEach { _ ->
+                            progress += 0.025f
+                            delay(100)
+                            if (progress >= 1f) {
+                                viewModel.action(ChallengeAction.PickWord(true))
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+        delay(10)
+        viewModel.action(ChallengeAction.PickWord(false))
     }
 
     ChallengeScreenContent(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxSize(),
-        title = "${state.result.answeredWords.size + 1}/${state.words.size + 1}",
+        title = "${state.result.answeredWords.size}/${state.words.size}",
         word = state.current?.word ?: "",
         translation = state.current?.translation ?: "",
         progress = progress,
@@ -176,7 +203,6 @@ fun ChallengeScreenContent(
                     fontSize = 22.sp
                 )
             }
-
         }
     }
 }

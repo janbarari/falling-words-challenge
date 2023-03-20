@@ -4,4 +4,5 @@ sealed class ChallengeEffect {
     object OnCorrectAnswerSelected: ChallengeEffect()
     object OnWrongAnswerSelected: ChallengeEffect()
     object Finish: ChallengeEffect()
+    object StartTimer: ChallengeEffect()
 }
