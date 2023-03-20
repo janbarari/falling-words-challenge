@@ -22,3 +22,25 @@
 -->
 
 ## Falling Words Game Challenge by Babbel
+A mini word game to learn spanish provided by Babel as coding challenge. 
+
+### Stack
+- Kotlin
+- Coroutines
+- Jetpack Compose
+- Hilt
+- Decoupled MVI architecture
+- Clean architecture
+
+### Why Decouple MVI Architecture?
+Here is an article that I introduced decoupled MVI architecture
+[Decoupled MVI Architecture](https://betterprogramming.pub/introducing-decoupled-mvi-approach-for-android-in-2023-b93e4a16fb1b?source=user_profile---------0----------------------------)
+
+### Time Limit
+As it requested to be less than 4-8 hours, It took around 12 hours of work.
+
+### What would do differently if I had more time?
+Since I already exceed the task requested time, I would work/add:
+- Unit and UI tests
+- Modularization
+- Better UX
